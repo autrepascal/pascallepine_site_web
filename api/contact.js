@@ -2,14 +2,14 @@
  * /api/contact — relais formulaire de contact vers Resend
  *
  * Reçoit un POST JSON avec { nom, courriel, organisation, objet, message }.
- * Envoie un courriel à pascal@pascallepine.ca via Resend.
+ * Envoie un courriel à pl@pascallepine.ca via Resend.
  *
  * Variables d'environnement requises :
  *   - RESEND_API_KEY : clé API Resend (à configurer dans Vercel → Settings → Environment Variables)
  *
  * Configuration optionnelle :
- *   - CONTACT_FROM : adresse expéditeur (défaut : "Pascal Lépine <pascal@pascallepine.ca>")
- *   - CONTACT_TO   : adresse destinataire (défaut : "pascal@pascallepine.ca")
+ *   - CONTACT_FROM : adresse expéditeur (défaut : "Pascal Lépine <pl@pascallepine.ca>")
+ *   - CONTACT_TO   : adresse destinataire (défaut : "pl@pascallepine.ca")
  *
  * Le domaine expéditeur doit être vérifié dans le compte Resend.
  */
@@ -39,8 +39,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Adresse courriel invalide" });
   }
 
-  const from = process.env.CONTACT_FROM || "Pascal Lépine <pascal@pascallepine.ca>";
-  const to = process.env.CONTACT_TO || "pascal@pascallepine.ca";
+  const from = process.env.CONTACT_FROM || "Pascal Lépine <pl@pascallepine.ca>";
+  const to = process.env.CONTACT_TO || "pl@pascallepine.ca";
 
   const subject = `[Site] ${objet ? objet : "Message de " + (nom || courriel)}`;
 
