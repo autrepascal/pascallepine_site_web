@@ -2173,7 +2173,7 @@
         <div class="contact-layout">
           <div>
             <p style="font-family:var(--serif);font-size:1.35rem;font-weight:400;margin-bottom:2rem;letter-spacing:-0.01em;">Parlons-nous</p>
-            <form id="contactForm" action="https://formspree.io/f/VOTRE_ID_FORMSPREE" method="POST">
+            <form id="contactForm" action="/api/contact" method="POST">
               <div class="form-group fade-in"><label>Votre nom</label><input type="text" name="nom" required></div>
               <div class="form-group fade-in"><label>Votre courriel</label><input type="email" name="_replyto" required></div>
               <div class="form-group fade-in"><label>Organisation, institution ou collectif</label><input type="text" name="organisation"></div>
@@ -2181,6 +2181,10 @@
               <div class="form-group fade-in"><label>Décrivez brièvement votre enjeu, votre projet ou le contexte de votre démarche.</label><textarea name="message" required></textarea></div>
               <button type="submit" style="background:none;border:none;border-bottom:1px solid var(--noir);padding:0;padding-bottom:2px;font-family:var(--sans);font-size:0.75rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;color:var(--noir);cursor:pointer;margin-top:0.5rem;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.45'" onmouseout="this.style.opacity='1'">Envoyer</button>
             </form>
+            <div id="formConfirm" style="display:none;padding:1.5rem 0;font-family:var(--serif);font-size:1.05rem;line-height:1.6;color:var(--noir);">
+              <p style="font-weight:500;margin-bottom:0.5rem;">Merci, votre message est parti.</p>
+              <p style="font-size:0.95rem;color:var(--gris-3);">Pascal vous répondra dans les meilleurs délais.</p>
+            </div>
           </div>
           <div class="fi" style="padding-top:1rem;">
             <div class="contact-links" style="margin-top:0;">
@@ -2207,7 +2211,7 @@
   </div></div><!-- /page contact -->
 
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     // ─── SPA ROUTING ──────────────────────────────────────
     // Make go() global so onclick= attributes can find it
 
@@ -2256,11 +2260,32 @@
       cform.addEventListener('submit', async function(e) {
         e.preventDefault();
         const data = new FormData(cform);
+        const payload = {
+          nom: data.get('nom') || '',
+          courriel: data.get('_replyto') || '',
+          organisation: data.get('organisation') || '',
+          objet: data.get('objet') || '',
+          message: data.get('message') || ''
+        };
+        const showConfirm = () => {
+          cform.style.display = 'none';
+          const c = document.getElementById('formConfirm');
+          if (c) c.style.display = 'block';
+        };
+        const mailtoFallback = () => {
+          var em = ['pascal','pascallepine.ca'].join('@');
+          window.location.href = 'mailto:' + em + '?subject=' + encodeURIComponent(payload.objet || 'Message') + '&body=' + encodeURIComponent(payload.message || '');
+        };
         try {
-          const r = await fetch(cform.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
-          if (r.ok) { cform.style.display = 'none'; const c = document.getElementById('formConfirm'); if(c) c.style.display='block'; }
+          const r = await fetch('/api/contact', {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+          });
+          if (r.ok) { showConfirm(); }
+          else { mailtoFallback(); }
         } catch(err) {
-          var em = ['pascal','pascallepine.ca'].join('@'); window.location.href = 'mailto:' + em + '?subject=' + encodeURIComponent(data.get('objet')||'Message') + '&body=' + encodeURIComponent(data.get('message')||'');
+          mailtoFallback();
         }
       });
     }
