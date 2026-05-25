@@ -9,7 +9,7 @@
  *
  * Configuration optionnelle :
  *   - CONTACT_FROM : adresse expéditeur (défaut : "Pascal Lépine <pl@pascallepine.ca>")
- *   - CONTACT_TO   : adresse destinataire (défaut : "pl@pascallepine.ca")
+ *   - CONTACT_TO   : adresse destinataire (défaut : "pascallepinemtl@gmail.com")
  *
  * Le domaine expéditeur doit être vérifié dans le compte Resend.
  */
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
   }
 
   const from = process.env.CONTACT_FROM || "Pascal Lépine <pl@pascallepine.ca>";
-  const to = process.env.CONTACT_TO || "pl@pascallepine.ca";
+  const to = process.env.CONTACT_TO || "pascallepinemtl@gmail.com";
 
   const subject = `[Site] ${objet ? objet : "Message de " + (nom || courriel)}`;
 
