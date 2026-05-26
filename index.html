@@ -2200,8 +2200,8 @@
           <div class="fi" style="padding-top:1rem;">
             <div class="contact-links" style="margin-top:0;">
               <a href="tel:+15148089339" class="contact-link" style="font-size:0.85rem;">514 808-9339</a>
-              <a href="mailto:pl@pascallepine.ca" class="contact-link" style="font-size:0.85rem;">pl@pascallepine.ca</a>
-              <a href="https://www.linkedin.com/in/pascallepine" class="contact-link" style="font-size:0.85rem;" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="#" class="contact-link email-copy" style="font-size:0.85rem;" onclick="copyEmail(event, this)" data-email="pl@pascallepine.ca">pl@pascallepine.ca</a>
+              <a href="https://www.linkedin.com/in/plepine/" class="contact-link" style="font-size:0.85rem;" target="_blank" rel="noopener">LinkedIn</a>
             </div>
           </div>
         </div>
@@ -2270,6 +2270,32 @@
         setTimeout(function() { window.go(routes[path]); }, 50);
       }
     });
+
+    window.copyEmail = function(e, el) {
+      e.preventDefault();
+      var email = el.getAttribute('data-email');
+      var original = el.textContent;
+      function showCopied() {
+        el.textContent = 'Copié dans le presse-papier ✓';
+        setTimeout(function() { el.textContent = original; }, 2000);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(showCopied).catch(function() {
+          // Fallback : sélectionner et copier via document.execCommand
+          var ta = document.createElement('textarea');
+          ta.value = email; document.body.appendChild(ta);
+          ta.select(); document.execCommand('copy');
+          document.body.removeChild(ta);
+          showCopied();
+        });
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = email; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy');
+        document.body.removeChild(ta);
+        showCopied();
+      }
+    };
 
     window.go = function(name) {
       document.querySelectorAll('.page, .projet-page, .lecture-page').forEach(p => p.classList.remove('active'));
