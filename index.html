@@ -2256,6 +2256,21 @@
       document.getElementById('page-pensee').classList.add('active');
       window.scrollTo({top:0,behavior:'instant'});
     };
+    // Routing: si le path correspond à une page, naviguer à son ouverture
+    window.addEventListener('DOMContentLoaded', function() {
+      var path = window.location.pathname.replace(/^\//, '').toLowerCase();
+      var routes = {
+        'parlons-nous': 'contact',
+        'parcours': 'apropos',
+        'pratique': 'interventions',
+        'projets': 'pensee',
+        'accueil': 'accueil'
+      };
+      if (routes[path] && typeof window.go === 'function') {
+        setTimeout(function() { window.go(routes[path]); }, 50);
+      }
+    });
+
     window.go = function(name) {
       document.querySelectorAll('.page, .projet-page, .lecture-page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + name).classList.add('active');

@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/parlons-nous", "destination": "/" },
+    { "source": "/parcours", "destination": "/" },
+    { "source": "/pratique", "destination": "/" },
+    { "source": "/projets", "destination": "/" },
+    { "source": "/accueil", "destination": "/" }
+  ]
+}
