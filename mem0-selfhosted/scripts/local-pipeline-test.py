@@ -45,10 +45,13 @@ config = {
 print("==> Initialisation de mem0 (Ollama + Qdrant, tout local)...")
 m = Memory.from_config(config)
 
-print("==> Écriture d'une mémoire...")
+print("==> Écriture d'une mémoire (infer=False : stockage direct, sans extraction LLM)...")
+# infer=False contourne le bug #4157 (petit modèle -> JSON imparfait).
+# On teste ce qui compte : embeddings + stockage Qdrant + recherche.
 add_res = m.add(
     "Pascal développe le projet pascallepine_site_web et préfère avancer une étape validée à la fois.",
     user_id="pascal",
+    infer=False,
 )
 print(json.dumps(add_res, indent=2, ensure_ascii=False))
 
