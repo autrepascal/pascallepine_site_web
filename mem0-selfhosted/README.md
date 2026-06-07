@@ -99,7 +99,7 @@ bash scripts/bootstrap-config.sh
 |---|---|
 | `connection refused` vers Ollama | Ollama lancé ? `ollama list` doit répondre. |
 | Erreur de dimensions / `Wrong vector size` | `docker compose down -v` puis recommencer (voir ci-dessus). |
-| L'API réclame une clé OpenAI | Vérifier `LLM_PROVIDER=ollama` **et** `EMBEDDER_PROVIDER=ollama` dans `.env`, puis `docker compose up -d --force-recreate`. |
+| L'API réclame une clé OpenAI / `OpenAIError: api_key must be set` | Bug #3439 : la catégorisation appelle OpenAI en dur. Géré ici en détournant l'appel vers Ollama (`OPENAI_BASE_URL` + alias `gpt-4o-mini`). Vérifier que `ollama list` montre bien `gpt-4o-mini` et que les 2 variables `OPENAI_*` sont dans `.env`. |
 | Voir les logs | `docker compose logs -f openmemory-mcp` |
 
 ## Brancher Claude (aperçu — étape suivante)
