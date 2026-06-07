@@ -66,5 +66,35 @@ services:
       - "host.docker.internal:host-gateway"
     command: ["sleep", "infinity"]
 
+  # Phase 2 (accès web) : serveur MCP en HTTP + OAuth Google, derrière Caddy.
+  # Même mémoire que mem0-mcp-server (collection Qdrant 'claude_memory').
+  mem0-web:
+    build: ./web
+    container_name: mem0-web
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      mem0_store:
+        condition: service_started
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # Reverse proxy + HTTPS automatique (Let's Encrypt) pour mem0.autrepascal.ca
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./web/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - mem0-web
+
 volumes:
   mem0_storage:
+  caddy_data:
+  caddy_config:

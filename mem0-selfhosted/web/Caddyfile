@@ -1,0 +1,4 @@
+# HTTPS automatique (Let's Encrypt) pour le domaine, proxy vers le serveur MCP.
+mem0.autrepascal.ca {
+    reverse_proxy mem0-web:8000
+}
