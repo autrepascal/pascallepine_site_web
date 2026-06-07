@@ -52,5 +52,17 @@ services:
     depends_on:
       - openmemory-mcp
 
+  # Serveur MCP maison (étape 3b) : branche Claude sur la mémoire locale.
+  # Reste en vie ; Claude lance le serveur via `docker exec -i`.
+  mem0-mcp-server:
+    build: ./mcp
+    container_name: mem0-mcp-server
+    depends_on:
+      mem0_store:
+        condition: service_started
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ["sleep", "infinity"]
+
 volumes:
   mem0_storage:

@@ -102,12 +102,42 @@ bash scripts/bootstrap-config.sh
 | L'API réclame une clé OpenAI / `OpenAIError: api_key must be set` | Bug #3439 : la catégorisation appelle OpenAI en dur. Géré ici en détournant l'appel vers Ollama (`OPENAI_BASE_URL` + alias `gpt-4o-mini`). Vérifier que `ollama list` montre bien `gpt-4o-mini` et que les 2 variables `OPENAI_*` sont dans `.env`. |
 | Voir les logs | `docker compose logs -f openmemory-mcp` |
 
-## Brancher Claude (aperçu — étape suivante)
+## Étape 3b — brancher Claude (MCP)
 
-Une fois le stack validé, OpenMemory expose un endpoint MCP du type :
-`http://localhost:8765/mcp/claude/sse/<user_id>`. On le câblera à Claude Desktop
-à l'étape suivante (via un pont SSE→stdio). **On ne le fait pas maintenant** :
-une étape validée à la fois.
+On n'utilise PAS le serveur MCP d'OpenMemory (buggé avec Ollama local). À la
+place, un petit serveur MCP maison (`mcp/mcp_server.py`) réutilise la config
+validée. Claude Desktop et Claude Code le lancent via `docker exec`.
+
+```bash
+# 1. Construire et démarrer le conteneur MCP
+docker compose up -d --build mem0-mcp-server
+
+# 2. Brancher Claude (teste les deps + ajoute à Claude Code + affiche la
+#    config Claude Desktop à coller)
+bash scripts/connect-claude.sh
+```
+
+Pour **Claude Desktop**, ajoute dans
+`~/Library/Application Support/Claude/claude_desktop_config.json` :
+
+```json
+{
+  "mcpServers": {
+    "mem0-local": {
+      "command": "docker",
+      "args": ["exec", "-i", "mem0-mcp-server", "python", "/app/mcp_server.py"]
+    }
+  }
+}
+```
+puis **redémarre Claude Desktop**.
+
+**Outils exposés à Claude :** `add_memory`, `search_memory`, `list_memories`.
+Essaie : « *souviens-toi que je préfère avancer une étape validée à la fois* »,
+puis dans une nouvelle session : « *qu'est-ce que tu sais de mes préférences ?* »
+
+> Le conteneur `mem0-mcp-server` doit tourner (`docker compose up -d`) pour que
+> Claude puisse joindre la mémoire. Tout reste local.
 
 ## Et Montréal (étape 4) ?
 
