@@ -76,14 +76,15 @@ def add_memory(text: str, user_id: str = DEFAULT_USER) -> str:
 def search_memory(query: str, user_id: str = DEFAULT_USER) -> str:
     """Recherche dans la mémoire locale de Pascal par similarité de sens.
     À utiliser au début d'une tâche pour récupérer le contexte pertinent."""
-    out = _format(memory.search(query, user_id=user_id))
+    # mem0 récent : les IDs d'entité passent par filters=, plus en top-level.
+    out = _format(memory.search(query, filters={"user_id": user_id}))
     return out or "Aucune mémoire pertinente trouvée."
 
 
 @mcp.tool()
 def list_memories(user_id: str = DEFAULT_USER) -> str:
     """Liste toutes les mémoires enregistrées pour Pascal."""
-    out = _format(memory.get_all(user_id=user_id))
+    out = _format(memory.get_all(filters={"user_id": user_id}))
     return out or "La mémoire est vide."
 
 

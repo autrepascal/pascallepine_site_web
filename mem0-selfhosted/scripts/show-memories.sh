@@ -17,7 +17,7 @@ config = {
 }
 user_id = sys.argv[1] if len(sys.argv) > 1 else "pascal"
 m = Memory.from_config(config)
-res = m.get_all(user_id=user_id)
+res = m.get_all(filters={"user_id": user_id})
 items = res.get("results", res) if isinstance(res, dict) else res
 print(f"\n{len(items)} mémoire(s) dans TON Qdrant local (collection claude_memory, user={user_id}) :\n")
 for it in items:
