@@ -1,17 +1,31 @@
 """
-Serveur MCP local pour la mémoire de Pascal.
+Serveur MCP pour la mémoire de Pascal.
 
 Branche Claude (Desktop / Code) sur la mémoire mem0 auto-hébergée, en
-réutilisant la config validée à l'étape 3 :
+réutilisant la config validée :
   - LLM + embeddings via l'API compatible OpenAI d'Ollama (tout local)
   - stockage dans Qdrant (service mem0_store)
 
-Expose 3 outils à Claude : add_memory, search_memory, list_memories.
-Transport : stdio (Claude lance ce script via `docker exec -i`).
+Expose 3 outils : add_memory, search_memory, list_memories.
+Transport : stdio (Claude lance ce script via `docker exec -i` ou `ssh`).
 """
+import sys
 import os
-from mcp.server.fastmcp import FastMCP
-from mem0 import Memory
+import contextlib
+import logging
+import warnings
+
+# ⚠️ CRUCIAL (MCP via stdio) : le protocole JSON-RPC passe par STDOUT.
+# Tout texte parasite sur stdout (warnings de mem0/qdrant : spaCy, fastembed,
+# « Collection predates v3 »...) corromprait le protocole et ferait timeouter
+# Claude. On envoie donc TOUT le bruit des librairies vers stderr.
+logging.basicConfig(stream=sys.stderr, level=logging.ERROR)
+warnings.filterwarnings("ignore")
+
+# Imports lourds : stdout détourné vers stderr le temps du chargement.
+with contextlib.redirect_stdout(sys.stderr):
+    from mcp.server.fastmcp import FastMCP
+    from mem0 import Memory
 
 OLLAMA_V1 = os.environ.get("OLLAMA_OPENAI_URL", "http://host.docker.internal:11434/v1")
 DEFAULT_USER = os.environ.get("MEM0_USER", "pascal")
@@ -47,8 +61,17 @@ config = {
     },
 }
 
-memory = Memory.from_config(config)
+with contextlib.redirect_stdout(sys.stderr):
+    memory = Memory.from_config(config)
+
 mcp = FastMCP("mem0-local")
+
+
+@contextlib.contextmanager
+def _quiet():
+    """Empêche le bruit des libs de polluer le stdout du protocole MCP."""
+    with contextlib.redirect_stdout(sys.stderr):
+        yield
 
 
 def _format(res):
@@ -64,17 +87,16 @@ def add_memory(text: str, user_id: str = DEFAULT_USER) -> str:
     (préférences, décisions, faits sur ses projets comme L'autre Pascal /
     autrepascal.ca). À utiliser quand Pascal demande de se souvenir de quelque
     chose, ou quand une info mérite d'être conservée entre les sessions."""
-    if INFER:
-        # Extraction intelligente ; si le modèle la rate (JSON imparfait,
-        # bug mem0 #4157), on retombe sur le stockage direct.
-        try:
-            res = memory.add(text, user_id=user_id, infer=True)
-            if not (res.get("results") if isinstance(res, dict) else res):
+    with _quiet():
+        if INFER:
+            try:
+                res = memory.add(text, user_id=user_id, infer=True)
+                if not (res.get("results") if isinstance(res, dict) else res):
+                    res = memory.add(text, user_id=user_id, infer=False)
+            except Exception:
                 res = memory.add(text, user_id=user_id, infer=False)
-        except Exception:
+        else:
             res = memory.add(text, user_id=user_id, infer=False)
-    else:
-        res = memory.add(text, user_id=user_id, infer=False)
     return f"Mémoire enregistrée. {res}"
 
 
@@ -82,15 +104,16 @@ def add_memory(text: str, user_id: str = DEFAULT_USER) -> str:
 def search_memory(query: str, user_id: str = DEFAULT_USER) -> str:
     """Recherche dans la mémoire locale de Pascal par similarité de sens.
     À utiliser au début d'une tâche pour récupérer le contexte pertinent."""
-    # mem0 récent : les IDs d'entité passent par filters=, plus en top-level.
-    out = _format(memory.search(query, filters={"user_id": user_id}))
+    with _quiet():
+        out = _format(memory.search(query, filters={"user_id": user_id}))
     return out or "Aucune mémoire pertinente trouvée."
 
 
 @mcp.tool()
 def list_memories(user_id: str = DEFAULT_USER) -> str:
     """Liste toutes les mémoires enregistrées pour Pascal."""
-    out = _format(memory.get_all(filters={"user_id": user_id}))
+    with _quiet():
+        out = _format(memory.get_all(filters={"user_id": user_id}))
     return out or "La mémoire est vide."
 
 
