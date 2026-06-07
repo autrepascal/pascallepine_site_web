@@ -15,6 +15,9 @@ from mem0 import Memory
 
 OLLAMA_V1 = os.environ.get("OLLAMA_OPENAI_URL", "http://host.docker.internal:11434/v1")
 DEFAULT_USER = os.environ.get("MEM0_USER", "pascal")
+# Extraction intelligente via LLM. Désactivée par défaut (fiable + pas besoin
+# d'un gros LLM sur la VM). Mettre MEM0_INFER=true si un bon modèle est dispo.
+INFER = os.environ.get("MEM0_INFER", "false").lower() == "true"
 
 config = {
     "llm": {
@@ -61,13 +64,16 @@ def add_memory(text: str, user_id: str = DEFAULT_USER) -> str:
     (préférences, décisions, faits sur ses projets comme L'autre Pascal /
     autrepascal.ca). À utiliser quand Pascal demande de se souvenir de quelque
     chose, ou quand une info mérite d'être conservée entre les sessions."""
-    # On tente l'extraction intelligente (infer=True) ; si le modèle local la
-    # rate (petit modèle -> JSON imparfait, bug mem0 #4157), on stocke le texte.
-    try:
-        res = memory.add(text, user_id=user_id, infer=True)
-        if not (res.get("results") if isinstance(res, dict) else res):
+    if INFER:
+        # Extraction intelligente ; si le modèle la rate (JSON imparfait,
+        # bug mem0 #4157), on retombe sur le stockage direct.
+        try:
+            res = memory.add(text, user_id=user_id, infer=True)
+            if not (res.get("results") if isinstance(res, dict) else res):
+                res = memory.add(text, user_id=user_id, infer=False)
+        except Exception:
             res = memory.add(text, user_id=user_id, infer=False)
-    except Exception:
+    else:
         res = memory.add(text, user_id=user_id, infer=False)
     return f"Mémoire enregistrée. {res}"
 
