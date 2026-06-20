@@ -79,6 +79,18 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+  # Visualiseur web privé (lecture seule) de la mémoire, protégé par mot de passe.
+  mem0-viewer:
+    build: ./viewer
+    container_name: mem0-viewer
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      mem0_store:
+        condition: service_started
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
   # Reverse proxy + HTTPS automatique (Let's Encrypt) pour mem0.autrepascal.ca
   caddy:
     image: caddy:2
@@ -93,6 +105,7 @@ services:
       - caddy_config:/config
     depends_on:
       - mem0-web
+      - mem0-viewer
 
 volumes:
   mem0_storage:

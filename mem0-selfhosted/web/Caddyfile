@@ -1,4 +1,9 @@
-# HTTPS automatique (Let's Encrypt) pour le domaine, proxy vers le serveur MCP.
+# HTTPS automatique (Let's Encrypt) pour le domaine.
 mem0.autrepascal.ca {
+    # Visualiseur privé (lecture seule) — protégé par mot de passe dans l'app.
+    handle_path /viewer* {
+        reverse_proxy mem0-viewer:9000
+    }
+    # Serveur MCP (OAuth) pour Claude.
     reverse_proxy mem0-web:8000
 }
