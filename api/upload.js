@@ -24,6 +24,7 @@ export default async function handler(req, res) {
       openai: !!(process.env.OPENAI_API_KEY || process.env.V2T),
       v2t: !!process.env.V2T,
       resend: !!process.env.RESEND_API_KEY,
+      customKeys: Object.keys(process.env).filter((k) => /key|token|api|openai|v2t|secret|resend|blob/i.test(k)).sort(),
     });
   }
   if (req.method !== "POST") {
