@@ -682,14 +682,18 @@
         if (attach.length && totalSize > 3 * 1048576) {
           // Large payload → Vercel Blob (client upload)
           mode = 'blob';
-          const { upload } = await import('https://esm.sh/@vercel/blob@0.27.3/client');
-          for (const a of attach) {
-            const blob = await upload(`pomerleau/${Date.now()}-${a.name}`, a.data, {
-              access: 'public',
-              handleUploadUrl: '/api/upload',
-              contentType: a.type || 'application/octet-stream',
-            });
-            payloadFiles.push({ name: a.name, size: a.size, url: blob.url, kind: a.kind, q: a.q, seconds: a.seconds });
+          try {
+            const { upload } = await import('https://esm.sh/@vercel/blob@0.27.3/client');
+            for (const a of attach) {
+              const blob = await upload(`pomerleau/${Date.now()}-${a.name}`, a.data, {
+                access: 'public',
+                handleUploadUrl: '/api/upload',
+                contentType: a.type || 'application/octet-stream',
+              });
+              payloadFiles.push({ name: a.name, size: a.size, url: blob.url, kind: a.kind, q: a.q, seconds: a.seconds });
+            }
+          } catch (blobErr) {
+            throw new Error("L'envoi de fichiers volumineux (plus de 3 Mo au total) n'est pas encore activé. En attendant, réduisez la taille de vos pièces jointes, ou écrivez-moi directement à pl@pascallepine.ca.");
           }
         } else if (attach.length) {
           // Small payload → inline attachments via Resend
