@@ -1,0 +1,9 @@
+{
+  "name": "pascallepine-site-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site pascallepine.ca — statique + fonctions serverless Vercel.",
+  "dependencies": {
+    "@vercel/blob": "^0.27.3"
+  }
+}

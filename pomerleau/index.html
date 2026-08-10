@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informations préparatoires — Pomerleau · Pascal Lépine</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta name="description" content="Questionnaire préparatoire — réflexion stratégique sur le cadre d'engagement communautaire de Pomerleau.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --noir: #111010;
+      --blanc: #f8f6f2;
+      --gris-1: #e8e5df;
+      --gris-2: #c8c4bc;
+      --gris-3: #8a8680;
+      --gris-4: #4a4844;
+      --erreur: #8a3a3a;
+      --erreur-rule: #c0392b;
+      --serif: 'EB Garamond', Georgia, serif;
+      --sans: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+    }
+    html { font-size: 18px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--blanc);
+      color: var(--noir);
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    ::selection { background: var(--noir); color: var(--blanc); }
+
+    h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; line-height: 1.15; letter-spacing: -0.01em; }
+
+    .label {
+      font-family: var(--sans);
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gris-3);
+    }
+    .exergue {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+      line-height: 1.4;
+      color: var(--gris-4);
+    }
+
+    /* ─── SHELL ─────────────────────────────────────── */
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 5rem); }
+
+    /* ─── TOP BAR ───────────────────────────────────── */
+    header.bar {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--blanc);
+      border-bottom: 1px solid transparent;
+      transition: border-color .3s;
+    }
+    header.bar.scrolled { border-color: var(--gris-1); }
+    .bar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: 1.15rem 0; min-height: 60px;
+    }
+    .brand { font-family: var(--serif); font-size: 1.15rem; font-weight: 500; letter-spacing: -.01em; }
+    .bar-meta { display: flex; align-items: center; gap: 1.6rem; }
+    .bar-meta .label { white-space: nowrap; }
+    #statut {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-family: var(--sans); font-size: .7rem; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--gris-3);
+    }
+    #statut::before { content:""; width: 6px; height: 6px; border-radius: 50%; background: var(--gris-2); transition: background .3s; }
+    #statut.saved::before { background: var(--gris-4); }
+    #statut.sent::before { background: var(--noir); }
+    @media (max-width: 680px){ .bar-meta .sep-meta { display:none; } }
+
+    /* ─── COVER ─────────────────────────────────────── */
+    .cover { padding: clamp(3.5rem, 9vw, 8rem) 0 clamp(2.5rem, 6vw, 5rem); }
+    .cover-grid { display: grid; grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.66fr); gap: clamp(1.5rem, 4vw, 3.5rem); }
+    .cover-rail .label { display: block; line-height: 2; }
+    .display {
+      font-family: var(--serif);
+      font-size: clamp(2.9rem, 7.5vw, 5.6rem);
+      line-height: 1.02; letter-spacing: -.02em; font-weight: 400;
+    }
+    .display .tint { color: var(--gris-2); }
+    .cover .exergue { margin-top: 1.6rem; max-width: 22ch; }
+    .cover-body { margin-top: clamp(2rem, 4vw, 3rem); max-width: 54ch; }
+    .cover-body p { font-family: var(--serif); font-size: 1.28rem; line-height: 1.55; color: var(--gris-4); }
+    .cover-body p + p { margin-top: 1.1rem; }
+
+    /* the "how it works" note — replaces the old download note */
+    .note {
+      margin-top: clamp(2.2rem, 5vw, 3.5rem);
+      padding-left: 1.4rem;
+      border-left: 1px solid var(--gris-2);
+      max-width: 52ch;
+    }
+    .note .label { display: block; margin-bottom: .7rem; }
+    .note p { font-family: var(--serif); font-style: italic; font-size: 1.1rem; line-height: 1.5; color: var(--gris-4); }
+
+    /* ─── SECTIONS ──────────────────────────────────── */
+    .section { padding: clamp(3rem, 7vw, 6rem) 0; border-top: 1px solid var(--gris-1); }
+    .sec-grid { display: grid; grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.66fr); gap: clamp(1.5rem, 4vw, 3.5rem); }
+    .sec-rail { position: relative; }
+    .ghost { font-family: var(--serif); font-size: clamp(3rem, 6vw, 4.4rem); line-height: 1; color: var(--gris-2); font-weight: 400; }
+    .sec-rail .label { display: block; margin-top: .8rem; max-width: 16ch; line-height: 1.9; }
+    .sticky-rail { position: sticky; top: 88px; }
+    .sec-title { font-size: clamp(1.7rem, 3.4vw, 2.5rem); }
+    .sec-intro { margin-top: .9rem; max-width: 46ch; font-family: var(--serif); font-size: 1.18rem; line-height: 1.5; color: var(--gris-4); }
+
+    /* ─── BLACK BAND ────────────────────────────────── */
+    .blackband { background: var(--noir); color: var(--blanc); padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
+    .bb-label { display: block; font-family: var(--sans); font-weight: 400; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(248,246,242,.5); margin-bottom: 1.5rem; }
+    .bb-line { font-family: var(--serif); font-size: clamp(1.55rem, 3.6vw, 2.5rem); line-height: 1.28; letter-spacing: -.01em; color: rgba(248,246,242,.94); max-width: 24ch; }
+    .bb-line em { font-style: italic; color: #fff; }
+    .bb-sub { margin-top: 1.6rem; font-family: var(--serif); font-style: italic; font-size: 1.15rem; line-height: 1.5; color: rgba(248,246,242,.6); max-width: 40ch; }
+    .bb-symbol { display: inline-flex; align-items: center; justify-content: center; width: 1.25em; height: 1.25em; border: 1px solid rgba(248,246,242,.55); border-radius: 50%; color: rgba(248,246,242,.9); vertical-align: -.28em; }
+    .bb-symbol svg { width: .78em; height: .78em; display: block; }
+
+    /* ─── FIELDS ────────────────────────────────────── */
+    .field { margin-top: 2.3rem; }
+    .field > label.q, .fieldset-legend {
+      display: block;
+      font-family: var(--serif);
+      font-size: 1.24rem; line-height: 1.4; color: var(--noir);
+      margin-bottom: .7rem;
+    }
+    .field .hint { display:block; font-family: var(--sans); font-weight: 300; font-size: .9rem; color: var(--gris-3); margin-top: -.35rem; margin-bottom: .8rem; }
+    input[type=text], input[type=email], textarea {
+      width: 100%;
+      font-family: var(--sans); font-weight: 300; font-size: 1.02rem; color: var(--noir);
+      background: transparent;
+      border: none; border-bottom: 1px solid var(--gris-2);
+      padding: .55rem 0; line-height: 1.6;
+      transition: border-color .25s;
+    }
+    input::placeholder, textarea::placeholder { color: var(--gris-2); font-family: var(--serif); font-weight: 400; font-size: 1.1rem; }
+    input:focus, textarea:focus { outline: none; border-bottom-color: var(--noir); }
+    textarea { resize: vertical; min-height: 3.2rem; overflow: hidden; }
+    .field.invalid input, .field.invalid textarea { border-bottom-color: var(--erreur-rule); }
+    .field .err { display:none; font-family: var(--serif); font-style: italic; font-size: .95rem; color: var(--erreur); margin-top: .5rem; }
+    .field.invalid .err { display:block; }
+
+    /* two-up for identity */
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 620px){ .row2 { grid-template-columns: 1fr; gap: 0; } .row2 .field { margin-top: 2rem; } }
+
+    /* checkboxes */
+    fieldset { border: none; }
+    .check {
+      display: grid; grid-template-columns: auto 1fr; gap: .9rem; align-items: start;
+      padding: 1.05rem 0; border-bottom: 1px solid var(--gris-1);
+    }
+    .check:first-of-type { border-top: 1px solid var(--gris-1); }
+    .check input[type=checkbox] {
+      appearance: none; -webkit-appearance: none;
+      width: 17px; height: 17px; margin-top: .28rem;
+      border: 1px solid var(--gris-3); background: transparent;
+      display: grid; place-content: center; cursor: pointer; transition: border-color .2s;
+      border-radius: 0;
+    }
+    .check input[type=checkbox]:hover { border-color: var(--noir); }
+    .check input[type=checkbox]::after { content:""; width: 9px; height: 9px; background: var(--noir); transform: scale(0); transition: transform .12s; }
+    .check input[type=checkbox]:checked::after { transform: scale(1); }
+    .check input[type=checkbox]:checked { border-color: var(--noir); }
+    .check label { font-family: var(--serif); font-size: 1.12rem; line-height: 1.45; color: var(--gris-4); cursor: pointer; }
+    .check input[type=checkbox]:checked + label { color: var(--noir); }
+
+    /* ─── FILE UPLOAD ───────────────────────────────── */
+    .drop {
+      margin-top: 1.6rem;
+      border: 1px dashed var(--gris-2);
+      padding: 1.8rem 1.6rem;
+      text-align: center;
+      transition: border-color .25s, background .25s;
+      cursor: pointer;
+    }
+    .drop:hover, .drop.over { border-color: var(--noir); background: rgba(17,16,16,.02); }
+    .drop .dz-title { font-family: var(--serif); font-style: italic; font-size: 1.12rem; color: var(--gris-4); }
+    .drop .dz-sub { display:block; margin-top: .4rem; font-family: var(--sans); font-weight: 300; font-size: .85rem; color: var(--gris-3); }
+    .files { margin-top: 1.1rem; }
+    .file-row {
+      display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: center;
+      padding: .8rem 0; border-bottom: 1px solid var(--gris-1);
+    }
+    .file-row .fn { font-family: var(--sans); font-weight: 400; font-size: .95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .file-row .fs { font-family: var(--sans); font-weight: 300; font-size: .82rem; color: var(--gris-3); }
+    .file-row button { background: none; border: none; cursor: pointer; font-family: var(--sans); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gris-3); padding: .2rem .1rem; transition: color .2s; }
+    .file-row button:hover { color: var(--erreur); }
+
+    /* ─── VOICE NOTES (symboles L'autre Pascal) ─────── */
+    .voice { margin-top: 1.15rem; display: flex; flex-direction: column; gap: .75rem; align-items: flex-start; }
+    .voice-row { display: flex; align-items: center; gap: .8rem; }
+    .voice-btn {
+      width: 28px; height: 28px; flex: 0 0 28px; border-radius: 50%;
+      border: 1px solid var(--gris-2); background: transparent; color: var(--gris-3);
+      display: grid; place-content: center; cursor: pointer; padding: 0;
+      transition: border-color .25s, color .25s, border-radius .25s;
+    }
+    .voice-btn:hover { border-color: var(--noir); color: var(--noir); }
+    .voice-btn svg { width: 15px; height: 15px; display: block; }
+    .voice-btn.recording { color: #2f6df6; border-color: #2f6df6; border-radius: 8px; }
+    .voice-label { font-family: var(--serif); font-weight: 400; font-size: 1.1rem; letter-spacing: normal; text-transform: none; color: var(--gris-2); }
+    .voice-status { font-family: var(--serif); font-style: italic; font-size: 1rem; color: #2f6df6; font-variant-numeric: tabular-nums; }
+    .wave rect { transform-origin: center; animation: wave 1s ease-in-out infinite; }
+    .wave rect:nth-child(2) { animation-delay: .15s; }
+    .wave rect:nth-child(3) { animation-delay: .3s; }
+    .wave rect:nth-child(4) { animation-delay: .45s; }
+    .wave rect:nth-child(5) { animation-delay: .6s; }
+    @keyframes wave { 0%,100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+    .voice-done { display: none; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+    .voice-done.active { display: flex; }
+    .voice audio { height: 36px; max-width: 240px; }
+    .voice .mini {
+      background: none; border: none; cursor: pointer; padding: 0;
+      font-family: var(--serif); font-weight: 400; font-size: 1.05rem; letter-spacing: normal;
+      text-transform: none; color: var(--gris-3); transition: color .2s;
+    }
+    .voice .mini:hover { color: var(--noir); }
+    .voice-msg { font-family: var(--serif); font-style: italic; font-size: .92rem; color: var(--erreur); }
+    @media (prefers-reduced-motion: reduce) { .wave rect { animation: none; transform: scaleY(.7); } }
+
+    /* ─── ACTIONS ───────────────────────────────────── */
+    .footer-actions { padding: clamp(3rem, 7vw, 6rem) 0 clamp(4rem, 9vw, 8rem); border-top: 1px solid var(--gris-1); }
+    .send-wrap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2rem 2.6rem; }
+    .btn-send {
+      background: none; border: none; cursor: pointer;
+      font-family: var(--sans); font-weight: 400; font-size: .82rem;
+      letter-spacing: .36em; text-transform: uppercase; color: var(--noir);
+      padding: 0 0 .7rem; position: relative;
+    }
+    .btn-send::after { content:""; position: absolute; left:0; right:0; bottom:0; height:1px; background: var(--noir); transform-origin: left; transition: letter-spacing .4s, transform .4s cubic-bezier(.65,0,.35,1); }
+    .btn-send:hover:not(:disabled) { letter-spacing: .42em; }
+    .btn-send:hover:not(:disabled)::after { transform: scaleX(.7); }
+    .btn-send:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-quiet { background:none; border:none; cursor:pointer; font-family: var(--sans); font-weight:300; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color: var(--gris-3); transition: color .2s; }
+    .btn-quiet:hover { color: var(--noir); }
+    .send-note { margin-top: 1.6rem; font-family: var(--serif); font-style: italic; font-size: 1rem; color: var(--gris-3); max-width: 50ch; }
+    .send-error { display:none; margin-top: 1rem; font-family: var(--serif); font-style: italic; font-size: 1.02rem; color: var(--erreur); }
+    .send-error.show { display:block; }
+
+    /* ─── SUCCESS ───────────────────────────────────── */
+    .done { display:none; padding: clamp(5rem,12vw,10rem) 0; text-align: left; }
+    .done.show { display:block; }
+    .done .display { font-size: clamp(2.4rem,6vw,4rem); }
+    .done p { font-family: var(--serif); font-size: 1.3rem; line-height: 1.55; color: var(--gris-4); margin-top: 1.4rem; max-width: 46ch; }
+
+    /* ─── PAGE FOOT ─────────────────────────────────── */
+    .pagefoot { border-top: 1px solid var(--gris-1); padding: 2.4rem 0 3rem; }
+    .pagefoot .inner { display:flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: baseline; justify-content: space-between; }
+    .pagefoot .nm { font-family: var(--serif); font-size: 1rem; font-weight: 500; }
+    .pagefoot .tg { font-family: var(--serif); font-style: italic; font-size: .95rem; color: var(--gris-3); }
+
+    /* ─── RESPONSIVE ────────────────────────────────── */
+    @media (max-width: 760px){
+      .cover-grid, .sec-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .sticky-rail { position: static; }
+      .sec-rail { display:flex; align-items: baseline; gap: 1rem; }
+      .sec-rail .label { margin-top: 0; }
+      .ghost { font-size: 2.6rem; }
+    }
+    @media (prefers-reduced-motion: reduce){ * { transition: none !important; scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <header class="bar" id="bar">
+    <div class="wrap bar-inner">
+      <div class="brand">Pascal Lépine</div>
+      <div class="bar-meta">
+        <span class="label sep-meta">Pomerleau · Août 2026</span>
+        <span id="statut" aria-live="polite">Brouillon</span>
+      </div>
+    </div>
+  </header>
+
+  <main id="form-main">
+    <!-- COVER -->
+    <div class="cover">
+      <div class="wrap cover-grid">
+        <div class="cover-rail">
+          <span class="label">Questionnaire</span>
+          <span class="label">Préparatoire</span>
+          <span class="label">Août 2026</span>
+        </div>
+        <div>
+          <h1 class="display">Informations<br><span class="tint">préparatoires</span></h1>
+          <p class="exergue">Réflexion stratégique sur le cadre d'engagement communautaire de Pomerleau</p>
+          <div class="cover-body">
+            <p>L'objectif de ce questionnaire est de voir ce qui existe, comment ça fonctionne aujourd'hui, et où ça résiste. Ça m'aiderait à comprendre le cadre actuel, explicite et implicite.</p>
+            <p>Je suis conscient que cela fait beaucoup de questions. Bien entendu, sentez-vous bien à l'aise de ne pas répondre à toutes.</p>
+          </div>
+          <div class="note">
+            <span class="label">Vos réponses</span>
+            <p>Elles s'enregistrent dans ce navigateur au fil de la saisie. Rien n'est transmis tant que vous n'appuyez pas sur « Envoyer ». Vous pouvez joindre vos documents directement dans le formulaire.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <form id="qform" novalidate>
+      <!-- IDENTITÉ -->
+      <section class="section">
+        <div class="wrap sec-grid">
+          <div class="sec-rail"><div class="sticky-rail"><span class="ghost">00</span><span class="label">Pour vous répondre</span></div></div>
+          <div class="sec-body">
+            <h2 class="sec-title">Vos coordonnées</h2>
+            <p class="sec-intro">Pour savoir à qui répondre — et vous confirmer la réception.</p>
+            <div class="field">
+              <label class="q" for="nom">Votre nom</label>
+              <input type="text" id="nom" name="nom" autocomplete="name">
+            </div>
+            <div class="field" data-required>
+              <label class="q" for="courriel">Votre courriel</label>
+              <input type="email" id="courriel" name="courriel" autocomplete="email" required>
+              <span class="err">Un courriel valide est nécessaire pour vous répondre.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 01 · DOCUMENTATION EXISTANTE -->
+      <section class="section">
+        <div class="wrap sec-grid">
+          <div class="sec-rail"><div class="sticky-rail"><span class="ghost">01</span><span class="label">Ce qui existe déjà</span></div></div>
+          <div class="sec-body">
+            <h2 class="sec-title">Documentation existante</h2>
+            <p class="sec-intro">Cochez ce que vous pouvez me transmettre. Ce qui n'existe pas est une information en soi.</p>
+            <fieldset id="docs">
+              <div class="check"><input type="checkbox" id="d1" name="docs" value="Politique d'engagement communautaire (la plus récente)"><label for="d1">Politique d'engagement communautaire (la plus récente)</label></div>
+              <div class="check"><input type="checkbox" id="d2" name="docs" value="Document(s) complémentaire(s) aux volets dons et commandites, s'il en existe"><label for="d2">Document(s) complémentaire(s) aux volets dons et commandites, s'il en existe</label></div>
+              <div class="check"><input type="checkbox" id="d3" name="docs" value="Critères d'admissibilité et d'analyse (la version la plus récente et la plus détaillée)"><label for="d3">Critères d'admissibilité et d'analyse (la version la plus récente et la plus détaillée)</label></div>
+              <div class="check"><input type="checkbox" id="d4" name="docs" value="Processus d'évaluation et d'approbation des demandes, s'il en existe un formalisé"><label for="d4">Processus d'évaluation et d'approbation des demandes, s'il en existe un formalisé</label></div>
+              <div class="check"><input type="checkbox" id="d5" name="docs" value="Gabarit de demande, redditions de comptes ou rapports d'impact, s'il y en a"><label for="d5">Gabarit de demande, redditions de comptes ou rapports d'impact, s'il y en a <span style="color:var(--gris-2)">— à valider</span></label></div>
+            </fieldset>
+
+            <!-- FILE UPLOAD -->
+            <div class="field" style="margin-top:2.6rem;">
+              <span class="q" style="display:block;">Joindre vos documents</span>
+              <span class="hint">PDF, Word, images, tableurs… Vous pouvez déposer plusieurs fichiers.</span>
+              <div class="drop" id="drop" role="button" tabindex="0" aria-label="Joindre des fichiers">
+                <span class="dz-title">Déposez vos fichiers ici, ou cliquez pour parcourir</span>
+                <span class="dz-sub" id="dz-sub">Aucun fichier joint</span>
+              </div>
+              <input type="file" id="filepick" multiple hidden>
+              <div class="files" id="filelist"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ENCADRÉ NOIR — comment répondre -->
+      <section class="blackband">
+        <div class="wrap">
+          <span class="bb-label">Comment répondre</span>
+          <p class="bb-line">Pour chacune des questions qui suivent, à votre gré&nbsp;: vous <em>écrivez</em> votre réponse, vous la <em>dictez</em>&nbsp;<span class="bb-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="1.3"/></svg></span> en note vocale, ou vous faites les deux.</p>
+          <p class="bb-sub">Il n'y a pas de bonne longueur. Ce qui compte, c'est ce qui est juste.</p>
+        </div>
+      </section>
+
+      <!-- 02 · PORTRAIT DES CONTRIBUTIONS -->
+      <section class="section">
+        <div class="wrap sec-grid">
+          <div class="sec-rail"><div class="sticky-rail"><span class="ghost">02</span><span class="label">Ce que vous soutenez</span></div></div>
+          <div class="sec-body">
+            <h2 class="sec-title">Portrait des contributions</h2>
+            <p class="sec-intro">Ce que Pomerleau soutient aujourd'hui, et dans quel ordre de grandeur.</p>
+            <div class="field"><label class="q" for="q2a">Quels types de contributions offrez-vous aujourd'hui — dons, commandites, bénévolat, dons en nature, autres ?</label><textarea id="q2a" name="q2a" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q2b">Quel est l'ordre de grandeur de l'enveloppe annuelle, et comment se répartit-elle entre ces volets ?</label><textarea id="q2b" name="q2b" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q2c">Quelles causes, quels milieux ou quels territoires soutenez-vous le plus souvent ?</label><textarea id="q2c" name="q2c" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q2d">Y a-t-il des engagements récurrents ou pluriannuels ? Lesquels, et pourquoi ?</label><textarea id="q2d" name="q2d" rows="2"></textarea></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 · GOUVERNANCE -->
+      <section class="section">
+        <div class="wrap sec-grid">
+          <div class="sec-rail"><div class="sticky-rail"><span class="ghost">03</span><span class="label">Qui décide, et comment</span></div></div>
+          <div class="sec-body">
+            <h2 class="sec-title">Gouvernance et décision</h2>
+            <p class="sec-intro">Comment une demande chemine, et sur quoi une décision s'appuie.</p>
+            <div class="field"><label class="q" for="q3a">Qui prend les décisions — une personne, un comité, le conseil ? Selon quels seuils de montant ou d'engagement ?</label><textarea id="q3a" name="q3a" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q3b">À quelle fréquence les demandes sont-elles évaluées ?</label><textarea id="q3b" name="q3b" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q3c">Sur quels critères — explicites ou implicites — une demande est-elle retenue ou refusée ?</label><textarea id="q3c" name="q3c" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q3d">Le personnel est-il impliqué dans les propositions ou les décisions ? De quelle manière ?</label><textarea id="q3d" name="q3d" rows="2"></textarea></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 · ORIGINE DES DEMANDES -->
+      <section class="section">
+        <div class="wrap sec-grid">
+          <div class="sec-rail"><div class="sticky-rail"><span class="ghost">04</span><span class="label">D'où elles viennent</span></div></div>
+          <div class="sec-body">
+            <h2 class="sec-title">Origine des demandes</h2>
+            <p class="sec-intro">Par où arrivent les demandes, et à quel volume.</p>
+            <div class="field"><label class="q" for="q4a">Comment les demandes vous parviennent-elles — formulaire, courriel, relations, sollicitations d'employés ?</label><textarea id="q4a" name="q4a" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q4b">Quel volume recevez-vous, environ, par année ?</label><textarea id="q4b" name="q4b" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q4c">Quelle proportion provient de partenaires déjà soutenus, par rapport à de nouvelles organisations ?</label><textarea id="q4c" name="q4c" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q4d">Y a-t-il des demandes que vous aimeriez recevoir davantage — ou moins ?</label><textarea id="q4d" name="q4d" rows="2"></textarea></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 · INTENTIONS ET TENSIONS -->
+      <section class="section">
+        <div class="wrap sec-grid">
+          <div class="sec-rail"><div class="sticky-rail"><span class="ghost">05</span><span class="label">Ce qui résiste</span></div></div>
+          <div class="sec-body">
+            <h2 class="sec-title">Intentions et tensions</h2>
+            <p class="sec-intro">Le cœur du mandat — ce que vous aimeriez que ce cadre arrive à porter.</p>
+            <div class="field"><label class="q" for="q5a">Qu'est-ce que votre politique actuelle exprime bien ? Qu'est-ce qu'elle n'arrive pas encore à dire ?</label><textarea id="q5a" name="q5a" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q5b">Où sentez-vous des tensions — cohérence, équité, visibilité, alignement avec la mission ?</label><textarea id="q5b" name="q5b" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q5c">Qu'aimeriez-vous que cette politique permette, qu'elle ne permet pas aujourd'hui ?</label><textarea id="q5c" name="q5c" rows="2"></textarea></div>
+            <div class="field"><label class="q" for="q5d">À quoi ressemblerait, pour vous, une politique réussie ?</label><textarea id="q5d" name="q5d" rows="2"></textarea></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CLOSING -->
+      <section class="section">
+        <div class="wrap sec-grid">
+          <div class="sec-rail"><div class="sticky-rail"><span class="ghost">—</span><span class="label">Pour finir</span></div></div>
+          <div class="sec-body">
+            <h2 class="sec-title">Autre chose ?</h2>
+            <p class="sec-intro">Tout ce qui vous semble utile et qui n'entrait dans aucune case.</p>
+            <div class="field"><label class="q" for="q6">Commentaires libres</label><textarea id="q6" name="q6" rows="3"></textarea></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACTIONS -->
+      <div class="footer-actions">
+        <div class="wrap">
+          <div class="send-wrap">
+            <button type="submit" class="btn-send" id="send">Envoyer à Pascal Lépine</button>
+            <button type="button" class="btn-quiet" id="clear">Effacer le brouillon</button>
+          </div>
+          <p class="send-note" id="send-note">Vos réponses partiront directement à Pascal Lépine, avec vos documents joints. Vous n'avez rien à télécharger.</p>
+          <p class="send-error" id="send-error"></p>
+        </div>
+      </div>
+    </form>
+
+    <!-- SUCCESS -->
+    <div class="done" id="done">
+      <div class="wrap">
+        <span class="label">Reçu</span>
+        <h2 class="display" style="margin-top:.6rem;">Merci.</h2>
+        <p id="done-msg">Vos réponses et vos documents sont bien partis. Vous en recevrez une confirmation à votre courriel. Je vous reviens avant la rencontre de démarrage.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pagefoot">
+    <div class="wrap inner">
+      <span class="nm">Pascal Lépine</span>
+      <span class="tg">Faire émerger de la clarté là où la complexité résiste.</span>
+    </div>
+  </footer>
+
+  <script type="module">
+    const KEY = 'pomerleau-questionnaire-v1';
+    const form = document.getElementById('qform');
+    const statut = document.getElementById('statut');
+    const bar = document.getElementById('bar');
+
+    /* nav border on scroll */
+    const onScroll = () => bar.classList.toggle('scrolled', window.scrollY > 8);
+    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+    /* textarea auto-grow */
+    const grow = (el) => { el.style.height = 'auto'; el.style.height = Math.max(el.scrollHeight, 40) + 'px'; };
+    form.querySelectorAll('textarea').forEach(t => { t.addEventListener('input', () => grow(t)); });
+
+    /* ── DRAFT AUTOSAVE (texte seulement) ── */
+    let saveTimer;
+    const collect = () => {
+      const data = {};
+      form.querySelectorAll('input[type=text], input[type=email], textarea').forEach(el => { data[el.id] = el.value; });
+      data.docs = [...form.querySelectorAll('input[name=docs]:checked')].map(c => c.id);
+      return data;
+    };
+    const markSaved = () => { statut.textContent = 'Brouillon enregistré'; statut.className = 'saved'; };
+    const save = () => {
+      try { localStorage.setItem(KEY, JSON.stringify(collect())); markSaved(); } catch (e) {}
+    };
+    const scheduleSave = () => { statut.textContent = 'Enregistrement…'; statut.className = ''; clearTimeout(saveTimer); saveTimer = setTimeout(save, 600); };
+
+    const restore = () => {
+      let raw; try { raw = localStorage.getItem(KEY); } catch (e) { return; }
+      if (!raw) return;
+      let data; try { data = JSON.parse(raw); } catch (e) { return; }
+      Object.entries(data).forEach(([k, v]) => {
+        if (k === 'docs') return;
+        const el = document.getElementById(k);
+        if (el) el.value = v;
+      });
+      (data.docs || []).forEach(id => { const c = document.getElementById(id); if (c) c.checked = true; });
+      form.querySelectorAll('textarea').forEach(grow);
+      if (raw) markSaved();
+    };
+    restore();
+    form.addEventListener('input', scheduleSave);
+    form.addEventListener('change', scheduleSave);
+
+    document.getElementById('clear').addEventListener('click', () => {
+      if (!confirm('Effacer toutes vos réponses enregistrées dans ce navigateur ?')) return;
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      form.reset();
+      form.querySelectorAll('textarea').forEach(grow);
+      files = []; renderFiles();
+      statut.textContent = 'Brouillon'; statut.className = '';
+    });
+
+    /* ── FILES ── */
+    let files = [];
+    const drop = document.getElementById('drop');
+    const filepick = document.getElementById('filepick');
+    const filelist = document.getElementById('filelist');
+    const dzSub = document.getElementById('dz-sub');
+    const fmt = (b) => b < 1024 ? b + ' o' : b < 1048576 ? (b/1024).toFixed(0) + ' Ko' : (b/1048576).toFixed(1) + ' Mo';
+
+    const renderFiles = () => {
+      filelist.innerHTML = '';
+      let total = 0;
+      files.forEach((f, i) => {
+        total += f.size;
+        const row = document.createElement('div');
+        row.className = 'file-row';
+        row.innerHTML = `<span class="fn"></span><span class="fs">${fmt(f.size)}</span><button type="button" aria-label="Retirer">Retirer</button>`;
+        row.querySelector('.fn').textContent = f.name;
+        row.querySelector('button').addEventListener('click', () => { files.splice(i, 1); renderFiles(); });
+        filelist.appendChild(row);
+      });
+      dzSub.textContent = files.length ? `${files.length} fichier${files.length>1?'s':''} · ${fmt(total)}` : 'Aucun fichier joint';
+    };
+    const addFiles = (list) => {
+      for (const f of list) {
+        if (f.size > 25 * 1048576) { alert(`« ${f.name} » dépasse 25 Mo et n'a pas été ajouté.`); continue; }
+        if (!files.some(x => x.name === f.name && x.size === f.size)) files.push(f);
+      }
+      renderFiles();
+    };
+    drop.addEventListener('click', () => filepick.click());
+    drop.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); filepick.click(); } });
+    filepick.addEventListener('change', () => { addFiles(filepick.files); filepick.value = ''; });
+    ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('over'); }));
+    ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
+    drop.addEventListener('drop', (e) => { if (e.dataTransfer?.files?.length) addFiles(e.dataTransfer.files); });
+
+    /* ── VOICE NOTES ── */
+    const voiceNotes = {}; // qid -> { blob, mime, seconds }
+    const pickMime = () => {
+      if (!window.MediaRecorder) return null;
+      const c = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
+      for (const m of c) { try { if (MediaRecorder.isTypeSupported(m)) return m; } catch (e) {} }
+      return '';
+    };
+    const extFor = (mime) => (mime || '').includes('mp4') ? 'm4a' : (mime || '').includes('ogg') ? 'ogg' : 'webm';
+    const mmss = (s) => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+
+    const RING_SVG = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="1.3"/></svg>';
+    const WAVE_SVG = '<svg viewBox="0 0 24 24" class="wave" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="2" height="8" rx="1"/><rect x="7.5" y="8" width="2" height="8" rx="1"/><rect x="11" y="8" width="2" height="8" rx="1"/><rect x="14.5" y="8" width="2" height="8" rx="1"/><rect x="18" y="8" width="2" height="8" rx="1"/></svg>';
+
+    function attachRecorder(textarea) {
+      const qid = textarea.id;
+      textarea.setAttribute('placeholder', 'Rédiger');
+      const wrap = document.createElement('div');
+      wrap.className = 'voice';
+      wrap.innerHTML =
+        '<div class="voice-row">' +
+          '<button type="button" class="voice-btn" aria-label="Enregistrer une note vocale">' + RING_SVG + '</button>' +
+          '<span class="voice-status" hidden></span>' +
+        '</div>' +
+        '<div class="voice-done"><audio controls preload="metadata"></audio><button type="button" class="mini refaire">Refaire</button><button type="button" class="mini retirer">Retirer</button></div>' +
+        '<div class="voice-msg" hidden></div>';
+      textarea.closest('.field').appendChild(wrap);
+
+      const btn = wrap.querySelector('.voice-btn');
+      const row = wrap.querySelector('.voice-row');
+      const status = wrap.querySelector('.voice-status');
+      const done = wrap.querySelector('.voice-done');
+      const audio = wrap.querySelector('audio');
+      const msg = wrap.querySelector('.voice-msg');
+
+      let mediaRec, chunks, stream, t0, timer, seconds = 0, state = 'idle';
+      const tick = () => { status.textContent = `Je t'écoute…  ${mmss(seconds)}`; };
+      const setIdle = () => { state = 'idle'; row.style.display = 'flex'; done.classList.remove('active'); btn.innerHTML = RING_SVG; btn.classList.remove('recording'); btn.setAttribute('aria-label', 'Enregistrer une note vocale'); status.hidden = true; };
+      const setRecording = () => { state = 'recording'; row.style.display = 'flex'; done.classList.remove('active'); btn.innerHTML = WAVE_SVG; btn.classList.add('recording'); btn.setAttribute('aria-label', 'Arrêter l’enregistrement'); status.hidden = false; };
+      const setDone = () => { state = 'done'; row.style.display = 'none'; done.classList.add('active'); };
+
+      async function start() {
+        msg.hidden = true;
+        const mime = pickMime();
+        if (mime === null) { msg.textContent = "L'enregistrement vocal n'est pas pris en charge par ce navigateur — vous pouvez écrire votre réponse."; msg.hidden = false; return; }
+        try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+        catch (e) { msg.textContent = "Micro indisponible — autorisez l'accès au micro, ou écrivez votre réponse."; msg.hidden = false; return; }
+        chunks = [];
+        try { mediaRec = mime ? new MediaRecorder(stream, { mimeType: mime, audioBitsPerSecond: 40000 }) : new MediaRecorder(stream); }
+        catch (e) { mediaRec = new MediaRecorder(stream); }
+        mediaRec.ondataavailable = (ev) => { if (ev.data && ev.data.size) chunks.push(ev.data); };
+        mediaRec.onstop = () => {
+          clearInterval(timer);
+          if (stream) stream.getTracks().forEach(t => t.stop());
+          const type = (mediaRec.mimeType || mime || 'audio/webm').split(';')[0];
+          const blob = new Blob(chunks, { type });
+          voiceNotes[qid] = { blob, mime: type, seconds: Math.round(seconds) };
+          audio.src = URL.createObjectURL(blob);
+          setDone();
+        };
+        seconds = 0; tick();
+        setRecording();
+        mediaRec.start();
+        t0 = performance.now();
+        timer = setInterval(() => { seconds = (performance.now() - t0) / 1000; tick(); if (seconds > 300) stop(); }, 250);
+      }
+      function stop() { if (mediaRec && mediaRec.state !== 'inactive') mediaRec.stop(); }
+
+      btn.addEventListener('click', () => { if (state === 'recording') stop(); else start(); });
+      wrap.querySelector('.refaire').addEventListener('click', () => { delete voiceNotes[qid]; audio.removeAttribute('src'); start(); });
+      wrap.querySelector('.retirer').addEventListener('click', () => { delete voiceNotes[qid]; audio.removeAttribute('src'); setIdle(); });
+    }
+    form.querySelectorAll('textarea').forEach(attachRecorder);
+
+    /* ── SUBMIT ── */
+    const send = document.getElementById('send');
+    const sendErr = document.getElementById('send-error');
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const readAsB64 = (file) => new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(String(r.result).split(',')[1]);
+      r.onerror = rej;
+      r.readAsDataURL(file);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      sendErr.classList.remove('show');
+      const courrielField = document.getElementById('courriel').closest('.field');
+      const courriel = document.getElementById('courriel').value.trim();
+      if (!emailRe.test(courriel)) {
+        courrielField.classList.add('invalid');
+        document.getElementById('courriel').focus();
+        return;
+      }
+      courrielField.classList.remove('invalid');
+
+      send.disabled = true;
+      const original = send.textContent;
+      send.textContent = 'Envoi en cours…';
+
+      try {
+        // answers
+        const answers = collect();
+        answers.docsLabels = [...form.querySelectorAll('input[name=docs]:checked')].map(c => c.value);
+
+        // Combine attached documents + voice notes into one set
+        const attach = [];
+        files.forEach(f => attach.push({ data: f, name: f.name, size: f.size, type: f.type, kind: 'doc' }));
+        Object.entries(voiceNotes).forEach(([qid, v]) => {
+          attach.push({ data: v.blob, name: `note-vocale-${qid}.${extFor(v.mime)}`, size: v.blob.size, type: v.mime, kind: 'voice', q: qid, seconds: v.seconds });
+        });
+
+        const totalSize = attach.reduce((s, a) => s + a.size, 0);
+        let payloadFiles = [];
+        let mode = 'inline';
+
+        if (attach.length && totalSize > 3 * 1048576) {
+          // Large payload → Vercel Blob (client upload)
+          mode = 'blob';
+          const { upload } = await import('https://esm.sh/@vercel/blob@0.27.3/client');
+          for (const a of attach) {
+            const blob = await upload(`pomerleau/${Date.now()}-${a.name}`, a.data, {
+              access: 'public',
+              handleUploadUrl: '/api/upload',
+              contentType: a.type || 'application/octet-stream',
+            });
+            payloadFiles.push({ name: a.name, size: a.size, url: blob.url, kind: a.kind, q: a.q, seconds: a.seconds });
+          }
+        } else if (attach.length) {
+          // Small payload → inline attachments via Resend
+          for (const a of attach) {
+            payloadFiles.push({ name: a.name, size: a.size, type: a.type, kind: a.kind, q: a.q, seconds: a.seconds, b64: await readAsB64(a.data) });
+          }
+        }
+
+        const res = await fetch('/api/pomerleau', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answers, files: payloadFiles, mode }),
+        });
+
+        if (!res.ok) {
+          let msg = 'Une erreur est survenue à l’envoi.';
+          try { const j = await res.json(); if (j.error) msg = j.error; } catch (e) {}
+          throw new Error(msg);
+        }
+
+        try { localStorage.removeItem(KEY); } catch (e) {}
+        statut.textContent = 'Envoyé'; statut.className = 'sent';
+        document.getElementById('form-main').scrollIntoView({ behavior: 'smooth' });
+        form.style.display = 'none';
+        document.querySelector('.cover').style.display = 'none';
+        document.getElementById('done').classList.add('show');
+      } catch (err) {
+        send.disabled = false;
+        send.textContent = original;
+        sendErr.textContent = (err && err.message) ? err.message : 'Une erreur réseau est survenue. Réessayez, ou écrivez-moi à pl@pascallepine.ca.';
+        sendErr.classList.add('show');
+      }
+    });
+  </script>
+</body>
+</html>
