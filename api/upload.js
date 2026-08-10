@@ -23,6 +23,7 @@ export default async function handler(req, res) {
       blob: !!process.env.BLOB_READ_WRITE_TOKEN,
       openai: !!process.env.OPENAI_API_KEY,
       resend: !!process.env.RESEND_API_KEY,
+      candidateKeys: Object.keys(process.env).filter((k) => /openai|whisper|gpt|transcri|voice|audio/i.test(k)),
     });
   }
   if (req.method !== "POST") {
