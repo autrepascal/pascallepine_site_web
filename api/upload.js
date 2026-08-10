@@ -17,6 +17,24 @@
 import { handleUpload } from "@vercel/blob/client";
 
 export default async function handler(req, res) {
+  // Diagnostic temporaire : teste la clé de transcription (présence + validité), sans exposer sa valeur
+  if (req.method === "GET" && req.query && req.query.diag === "1") {
+    const key = process.env.OPENAI_API_KEY || process.env.V2T;
+    let openaiValid = false, status = null;
+    if (key) {
+      try {
+        const r = await fetch("https://api.openai.com/v1/models", { headers: { Authorization: `Bearer ${key}` } });
+        openaiValid = r.ok; status = r.status;
+      } catch (e) { status = "fetch-error"; }
+    }
+    return res.status(200).json({
+      blob: !!process.env.BLOB_READ_WRITE_TOKEN,
+      resend: !!process.env.RESEND_API_KEY,
+      openaiPresent: !!key,
+      openaiValid,
+      openaiStatus: status,
+    });
+  }
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
