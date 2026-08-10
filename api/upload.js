@@ -17,16 +17,6 @@
 import { handleUpload } from "@vercel/blob/client";
 
 export default async function handler(req, res) {
-  // Diagnostic temporaire : présence des clés (booléens, jamais les valeurs)
-  if (req.method === "GET" && req.query && req.query.diag === "1") {
-    return res.status(200).json({
-      blob: !!process.env.BLOB_READ_WRITE_TOKEN,
-      openai: !!(process.env.OPENAI_API_KEY || process.env.V2T),
-      v2t: !!process.env.V2T,
-      resend: !!process.env.RESEND_API_KEY,
-      customKeys: Object.keys(process.env).filter((k) => /key|token|api|openai|v2t|secret|resend|blob/i.test(k)).sort(),
-    });
-  }
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
