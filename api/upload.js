@@ -17,11 +17,6 @@
 import { handleUpload } from "@vercel/blob/client";
 
 export default async function handler(req, res) {
-  // Diagnostic temporaire : liste les NOMS des variables liées à Blob (jamais les valeurs)
-  if (req.method === "GET" && req.query && req.query.diag === "1") {
-    const names = Object.keys(process.env).filter((k) => /blob/i.test(k));
-    return res.status(200).json({ blobEnvVars: names, hasDefault: !!process.env.BLOB_READ_WRITE_TOKEN });
-  }
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
