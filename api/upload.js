@@ -21,9 +21,9 @@ export default async function handler(req, res) {
   if (req.method === "GET" && req.query && req.query.diag === "1") {
     return res.status(200).json({
       blob: !!process.env.BLOB_READ_WRITE_TOKEN,
-      openai: !!process.env.OPENAI_API_KEY,
+      openai: !!(process.env.OPENAI_API_KEY || process.env.V2T),
+      v2t: !!process.env.V2T,
       resend: !!process.env.RESEND_API_KEY,
-      candidateKeys: Object.keys(process.env).filter((k) => /openai|whisper|gpt|transcri|voice|audio/i.test(k)),
     });
   }
   if (req.method !== "POST") {

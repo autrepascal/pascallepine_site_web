@@ -78,7 +78,7 @@ export default async function handler(req, res) {
   const mmss = (s) => `${Math.floor((s || 0) / 60)}:${String(Math.floor((s || 0) % 60)).padStart(2, "0")}`;
 
   // Transcription optionnelle des notes vocales (activée si OPENAI_API_KEY présente)
-  const openaiKey = process.env.OPENAI_API_KEY;
+  const openaiKey = process.env.OPENAI_API_KEY || process.env.V2T;
   if (openaiKey && voices.length) {
     await Promise.all(voices.map(async (v) => {
       try {
