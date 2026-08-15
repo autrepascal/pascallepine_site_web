@@ -549,7 +549,7 @@
     };
     const addFiles = (list) => {
       for (const f of list) {
-        if (f.size > 25 * 1048576) { alert(`« ${f.name} » dépasse 25 Mo et n'a pas été ajouté.`); continue; }
+        if (f.size > 45 * 1048576) { alert(`« ${f.name} » dépasse 45 Mo et n'a pas été ajouté.`); continue; }
         if (!files.some(x => x.name === f.name && x.size === f.size)) files.push(f);
       }
       renderFiles();
@@ -675,17 +675,21 @@
           attach.push({ data: v.blob, name: `note-vocale-${qid}.${extFor(v.mime)}`, size: v.blob.size, type: v.mime, kind: 'voice', q: qid, seconds: v.seconds });
         });
 
-        const totalSize = attach.reduce((s, a) => s + a.size, 0);
-        let payloadFiles = [];
-        let mode = 'inline';
+        // Dossier de soumission (horodaté + nom) — TOUS les fichiers y sont téléversés dans Blob
+        const nomSafe = ((answers.nom || 'sans-nom').normalize('NFKD').replace(/[^\w\s-]/g, '')
+          .replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40)) || 'sans-nom';
+        const d = new Date(), pad = (n) => String(n).padStart(2, '0');
+        const stamp = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}`;
+        const rand = Math.random().toString(36).slice(2, 7);
+        const subFolder = `pomerleau/soumissions/${stamp}_${nomSafe}_${rand}`;
 
-        if (attach.length && totalSize > 3 * 1048576) {
-          // Large payload → Vercel Blob (client upload)
-          mode = 'blob';
+        const payloadFiles = [];
+        if (attach.length) {
+          send.textContent = 'Téléversement des fichiers…';
           try {
             const { upload } = await import('https://esm.sh/@vercel/blob@0.27.3/client');
             for (const a of attach) {
-              const blob = await upload(`pomerleau/${Date.now()}-${a.name}`, a.data, {
+              const blob = await upload(`${subFolder}/${a.name}`, a.data, {
                 access: 'public',
                 handleUploadUrl: '/api/upload',
                 contentType: a.type || 'application/octet-stream',
@@ -693,19 +697,15 @@
               payloadFiles.push({ name: a.name, size: a.size, url: blob.url, kind: a.kind, q: a.q, seconds: a.seconds });
             }
           } catch (blobErr) {
-            throw new Error("L'envoi de fichiers volumineux (plus de 3 Mo au total) n'est pas encore activé. En attendant, réduisez la taille de vos pièces jointes, ou écrivez-moi directement à pl@pascallepine.ca.");
+            throw new Error("Le téléversement des fichiers a échoué. Réessayez, ou écrivez-moi directement à pl@pascallepine.ca.");
           }
-        } else if (attach.length) {
-          // Small payload → inline attachments via Resend
-          for (const a of attach) {
-            payloadFiles.push({ name: a.name, size: a.size, type: a.type, kind: a.kind, q: a.q, seconds: a.seconds, b64: await readAsB64(a.data) });
-          }
+          send.textContent = 'Envoi en cours…';
         }
 
         const res = await fetch('/api/pomerleau', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ answers, files: payloadFiles, mode }),
+          body: JSON.stringify({ answers, files: payloadFiles, subFolder }),
         });
 
         if (!res.ok) {
