@@ -17,6 +17,21 @@
 import { handleUpload } from "@vercel/blob/client";
 
 export default async function handler(req, res) {
+  // Diagnostic temporaire : état Resend (validité clé + domaines vérifiés), sans exposer de secret
+  if (req.method === "GET" && req.query && req.query.diag === "resend") {
+    const rk = process.env.RESEND_API_KEY;
+    let resendStatus = null, domains = null, raw = null;
+    if (rk) {
+      try {
+        const r = await fetch("https://api.resend.com/domains", { headers: { Authorization: `Bearer ${rk}` } });
+        resendStatus = r.status;
+        const j = await r.json().catch(() => null);
+        domains = j && Array.isArray(j.data) ? j.data.map((d) => ({ name: d.name, status: d.status, region: d.region })) : null;
+        if (!domains) raw = typeof j === "object" ? JSON.stringify(j).slice(0, 300) : String(j).slice(0, 300);
+      } catch (e) { resendStatus = "fetch-error"; }
+    }
+    return res.status(200).json({ resendKeyPresent: !!rk, resendStatus, domains, raw });
+  }
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ error: "Method not allowed" });
