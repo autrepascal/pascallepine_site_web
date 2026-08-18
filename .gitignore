@@ -13,3 +13,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# mem0 self-hosted : config locale (pas de secret, mais perso)
+mem0-selfhosted/.env
